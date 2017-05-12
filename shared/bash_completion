@@ -1,0 +1,22 @@
+# -*- mode: sh; -*-
+# Local additions to ${PREFIX}/etc/bash_completion
+
+# serialver acts on class files, like java
+complete -o filenames -F _java serialver
+
+# Now do system-specific completions
+UNAME=$( uname -s )
+HOST=$( hostname -s )
+
+# Get path to real parent directory of this file
+if [[ -L "${BASH_SOURCE[0]}" ]]
+then
+    here=$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")" >> /dev/null; pwd)
+else
+    here=$(cd "$(dirname "${BASH_SOURCE[0]}")" >> /dev/null; pwd)
+fi
+
+[ -r "$here/../$UNAME/bash_completion" ] && \
+    . "$here/../$UNAME/bash_completion"
+
+unset UNAME HOST here
