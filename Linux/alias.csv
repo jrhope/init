@@ -1,0 +1,1 @@
+greplibs,find . -name "*.so" -exec nm -o "{}" ";" | c++filt | grep --color=auto -i
