@@ -41,18 +41,18 @@ then
 fi
 
 # Find CSV files relative to this file's location
-here=$( cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
+here=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >> /dev/null; pwd)
 
 # Set common aliases
-[ -r $here/../shared/alias.csv ] && \
-    awk -F"," "$awkprog" < $here/../shared/alias.csv
+[ -r "$here/../shared/alias.csv" ] && \
+    awk -F"," "$awkprog" < "$here/../shared/alias.csv"
 
 # Now set system-specific aliases
 UNAME=$( uname -s )
 HOST=$( hostname -s )
 
-[ -r $here/../$UNAME/alias.csv ] \
-    && awk -F"," "$awkprog" < $here/../$UNAME/alias.csv
+[ -r "$here/../$UNAME/alias.csv" ] \
+    && awk -F"," "$awkprog" < "$here/../$UNAME/alias.csv"
 
-[ -r $here/../$UNAME/alias_$HOST.csv ] \
-    && awk -F"," "$awkprog" < $here/../$UNAME/alias_$HOST.csv
+[ -r "$here/../$UNAME/alias_$HOST.csv" ] \
+    && awk -F"," "$awkprog" < "$here/../$UNAME/alias_$HOST.csv"
