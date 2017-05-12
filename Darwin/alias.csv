@@ -1,0 +1,2 @@
+ls,ls -FG
+greplibs,find . -name "*.dylib" -exec nm -o "{}" ";" | c++filt | grep --color=auto -i
