@@ -1,0 +1,104 @@
+#!/bin/tcsh -f
+# File executed by login and non-login tcsh shells.  Loaded *before*
+# .login (by default, but check $version for the "lf" option), so set
+# up environment variables here, instead of in .login, so that they
+# are available.
+
+# Get path to this file
+set this = `/usr/sbin/lsof +p $$ | grep -oE /.\*tcshrc`
+set here = `dirname $this`
+
+# Get environment variables
+if ( -x "$here/../scripts/get_environment.bash" ) then
+    eval `"$here/../scripts/get_environment.bash" -c`
+endif
+
+# Get alias definitions
+if ( -x "$here/../scripts/get_alias.bash" ) then
+    eval `"$here/../scripts/get_alias.bash" -c`
+endif
+
+# Set shell variables
+set history = 500
+set savehist = 500 merge
+set autolist
+set cdpath = ( . $HOME )
+set promptchars = "%#"
+
+# Set prompt
+set prompt_UNAME = `uname -s`
+set prompt_CSI = '\e['
+set prompt_OSC = '\e]'
+
+set prompt_RESET      = "%{${prompt_CSI}0m%}"
+set prompt_BOLD       = "%{${prompt_CSI}1m%}"
+set prompt_FAINT      = "%{${prompt_CSI}2m%}"
+set prompt_ITALIC     = "%{${prompt_CSI}3m%}"
+set prompt_UNDERLINE  = "%{${prompt_CSI}4m%}"
+set prompt_BLINK      = "%{${prompt_CSI}5m%}"
+set prompt_BLINK_FAST = "%{${prompt_CSI}6m%}"
+set prompt_REVERSE    = "%{${prompt_CSI}7m%}"
+
+set prompt_BLACK   = "%{${prompt_CSI}30m%}"
+set prompt_RED     = "%{${prompt_CSI}31m%}"
+set prompt_GREEN   = "%{${prompt_CSI}32m%}"
+set prompt_YELLOW  = "%{${prompt_CSI}33m%}"
+set prompt_BLUE    = "%{${prompt_CSI}34m%}"
+set prompt_MAGENTA = "%{${prompt_CSI}35m%}"
+set prompt_CYAN    = "%{${prompt_CSI}36m%}"
+set prompt_WHITE   = "%{${prompt_CSI}37m%}"
+
+set prompt_BLACK_BG   = "%{${prompt_CSI}40m%}"
+set prompt_RED_BG     = "%{${prompt_CSI}41m%}"
+set prompt_GREEN_BG   = "%{${prompt_CSI}42m%}"
+set prompt_YELLOW_BG  = "%{${prompt_CSI}43m%}"
+set prompt_BLUE_BG    = "%{${prompt_CSI}44m%}"
+set prompt_MAGENTA_BG = "%{${prompt_CSI}45m%}"
+set prompt_CYAN_BG    = "%{${prompt_CSI}46m%}"
+set prompt_WHITE_BG   = "%{${prompt_CSI}47m%}"
+
+set prompt_TITLE_START = "%{${prompt_OSC}0;"
+set prompt_TITLE_END = "\a%}"
+
+set prompt_TITLE = ""
+set prompt_SSH_MARKER = ""
+set prompt_FORMAT = ""
+set prompt_COLOR="${prompt_RED}"
+
+if ( $?SSH_TTY ) then
+    set prompt_SSH_MARKER = "${prompt_RED}* "
+endif
+if ( $prompt_UNAME == Darwin ) then
+    set prompt_COLOR = "${prompt_MAGENTA}"
+else if ( $prompt_UNAME == Linux ) then
+    set prompt_COLOR = "${prompt_CYAN}"
+endif
+
+if ( $TERM =~ xterm* || $TERM =~ rxvt* ) then
+    set prompt_TITLE = "${prompt_TITLE_START}%m:%~ (%n)${prompt_TITLE_END}"
+endif
+
+set prompt_FORMAT = "%P %m:%~ %n%#"
+
+if ( -n "$DOMTERM" ) then
+    set prompt_START = "%{${prompt_CSI}14u%}"
+    set prompt_END   = "%{${prompt_CSI}15u%}"
+    set prompt_BUTTON_START = "%{${prompt_CSI}16u%}"
+    set prompt_BUTTON_END   = "%{${prompt_CSI}17u%}"
+    set prompt_COMMAND_START = "%{${prompt_CSI}19u%}"
+    set prompt_HTML_START = "%{${prompt_OSC}72;"
+    set prompt_HTML_END = "\a%}"
+    set prompt_TRIANGLE='\342\226\274' # U+25BC "BLACK DOWN-POINTING TRIANGLE"
+
+    set prompt = "${prompt_COMMAND_START}${prompt_BUTTON_START}${prompt_TRIANGLE}${prompt_BUTTON_END}${prompt_START}${prompt_FORMAT} ${prompt_END}"
+else
+    set prompt = "${prompt_TITLE}${prompt_SSH_MARKER}${prompt_COLOR}${prompt_FORMAT}${prompt_RESET} "
+endif
+
+unset this here prompt_*
+
+# Define completions
+complete {cd,pushd} 'p/1/d/'
+complete javac 'n/*/f:*.java/'
+complete {open,less,more} 'p/*/f:^*.{class,o}/'
+complete rm 'p/*/f:^*.{c,h,cc,C,tex,1,man,l,y,java,cpp,c++,pl}/'
