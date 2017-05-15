@@ -2,8 +2,8 @@
 # @file scripts/get_alias.bash
 # Reads alias definitions from CSV files and prints them in a format
 # suitable for evaluation by a shell:
-# eval `get_alias.sh -s` for sh-like shells,
-# eval `get_alias.sh -c` for csh-like shells.
+# eval `get_alias.bash -s` for sh-like shells,
+# eval `get_alias.bash -c` for csh-like shells.
 # @author Jamison Hope <jrh@theptrgroup.com>
 
 # Make sure this file is being executed, not sourced
@@ -20,17 +20,18 @@ unset issourced
 
 # Set up for sh/csh style
 awkprog=""
+awkskipcomments="NF && \$1!~/^#/"
 
 if [ $# -eq 1 ]
 then
     if [ "x$1" == "x-s" ]
     then
         # sh-like shells
-        awkprog="{ print \"alias \"\$1\"='\"\$2\"';\" }"
+        awkprog="$awkskipcomments { print \"alias \"\$1\"='\"\$2\"';\" }"
     elif [ "x$1" == "x-c" ]
     then
         # csh-like shells
-        awkprog="{ print \"alias \"\$1\" '\"\$2\"';\" }"
+        awkprog="$awkskipcomments { print \"alias \"\$1\" '\"\$2\"';\" }"
     fi
 fi
 
