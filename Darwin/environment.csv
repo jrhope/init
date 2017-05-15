@@ -1,3 +1,6 @@
+PATH,/opt/local/sbin
+PATH,/opt/local/bin
+PATH,$HOME/bin
 # PlantUML uses GRAPHVIZ_DOT to find dot, if it isn't at
 # /usr/bin/dot.
 GRAPHVIZ_DOT,`which dot`
