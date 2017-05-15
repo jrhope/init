@@ -44,13 +44,13 @@ then
     if [ "x$1" == "x-s" ]
     then
         # sh-like shells
-        printf "source \"%s\"\n" "$here/path_functions.sh"
-        printf -v awkprog "$awkskipcomments { if (\$1 ~ /^$pathreg\$/) { print \"prepend_path \"\$1\" '\"\$2\"';\" } else { print \"export \"\$1\"='\"\$2\"';\" } }"
+        printf "source \"%s\";\n" "$here/path_functions.sh"
+        printf -v awkprog "$awkskipcomments { if (\$1 ~ /^$pathreg\$/) { print \"prepend_path \"\$1\" \"\$2\";\" } else { print \"export \"\$1\"=\"\$2\";\" } }"
     elif [ "x$1" == "x-c" ]
     then
         # csh-like shells
-        printf "source \"%s\"\n" "$here/path_functions.csh"
-        printf -v awkprog "$awkskipcomments { if (\$1 ~ /^$pathreg\$/) { print \"prepend_path \"\$1\" '\"\$2\"';\" } else { print \"setenv \"\$1\" '\"\$2\"';\" } }"
+        printf "source \"%s\";\n" "$here/path_functions.csh"
+        printf -v awkprog "$awkskipcomments { if (\$1 ~ /^$pathreg\$/) { print \"prepend_path \"\$1\" \"\$2\";\" } else { print \"setenv \"\$1\" \"\$2\";\" } }"
     fi
 fi
 
