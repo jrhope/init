@@ -1,0 +1,36 @@
+# -*- mode: sh; -*-
+
+# Determine this file
+if [[ -n "$BASH" ]]
+then
+    # bash
+    this="${BASH_SOURCE[0]}"
+elif [[ -n "$TMOUT" ]]
+then
+    # ksh
+    this="${.sh.file}"
+elif [[ -n "$ZSH_NAME" ]]
+then
+    # zsh
+    this="${(%):-%x}"
+fi
+
+if [[ -z "$this" ]]
+then
+    echo "Unrecognized shell"
+    return -1
+fi
+
+# Get path to directory of original
+if [[ -L "$this" ]]
+then
+    here=$(cd "$(dirname "$(readlink "$this")")" >> /dev/null; pwd)
+else
+    here=$(cd "$(dirname "$this")" >> /dev/null; pwd)
+fi
+
+# Get environment variables
+[ -x "$here/../scripts/get_environment.bash" ] \
+    && eval `"$here/../scripts/get_environment.bash" -s`
+
+unset this here

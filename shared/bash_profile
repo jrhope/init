@@ -1,0 +1,5 @@
+# -*- mode: sh; -*-
+# File executed by login bash shells.
+
+[ -r "$HOME/.profile" ] && . "$HOME/.profile"
+[ -r "$HOME/.bashrc"  ] && . "$HOME/.bashrc"

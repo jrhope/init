@@ -1,0 +1,135 @@
+# -*- mode: sh; -*-
+
+# Exit if non-interactive
+[ -z "$PS1" ] && return
+
+# Get path to real parent directory of this file
+if [[ -L "${BASH_SOURCE[0]}" ]]
+then
+    here=$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")" >> /dev/null; pwd)
+else
+    here=$(cd "$(dirname "${BASH_SOURCE[0]}")" >> /dev/null; pwd)
+fi
+
+# Get append_path, prepend_path
+[ -r "$here/../scripts/path_functions.sh" ] \
+    && . "$here/../scripts/path_functions.sh"
+
+# Get alias definitions
+[ -x "$here/../scripts/get_alias.bash" ] \
+    && eval `"$here/../scripts/get_alias.bash" -s`
+
+# Extra bash-only aliases
+alias rehash='hash -r'
+
+# Shell variables
+CDPATH=".:$HOME"
+HISTCONTROL=ignoredups
+
+# update the values of LINES and COLUMNS
+shopt -s checkwinsize
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# Set prompt
+set_prompt()
+{
+    local UNAME=$(uname -s)
+    local CSI='\e['
+    local OSC='\e]'
+
+    local RESET="\[${CSI}0m\]"
+
+    local BOLD="\[${CSI}1m\]"
+    local FAINT="\[${CSI}2m\]"
+    local ITALIC="\[${CSI}3m\]"
+    local UNDERLINE="\[${CSI}4m\]"
+    local BLINK="\[${CSI}5m\]"
+    local BLINK_FAST="\[${CSI}6m\]"
+    local REVERSE="\[${CSI}7m\]"
+
+    local BLACK="\[${CSI}30m\]"
+    local RED="\[${CSI}31m\]"
+    local GREEN="\[${CSI}32m\]"
+    local YELLOW="\[${CSI}33m\]"
+    local BLUE="\[${CSI}34m\]"
+    local MAGENTA="\[${CSI}35m\]"
+    local CYAN="\[${CSI}36m\]"
+    local WHITE="\[${CSI}37m\]"
+
+    local BLACK_BG="\[${CSI}40m\]"
+    local RED_BG="\[${CSI}41m\]"
+    local GREEN_BG="\[${CSI}42m\]"
+    local YELLOW_BG="\[${CSI}43m\]"
+    local BLUE_BG="\[${CSI}44m\]"
+    local MAGENTA_BG="\[${CSI}45m\]"
+    local CYAN_BG="\[${CSI}46m\]"
+    local WHITE_BG="\[${CSI}47m\]"
+
+    local TITLE_START="\[${OSC}0;"
+    local TITLE_END="\a\]"
+
+    local TITLE
+    local SSH_MARKER
+    local PROMPT_FORMAT
+    local COLOR=${RED}
+
+    if [[ ! ${SSH_TTY:-} = "" ]]
+    then SSH_MARKER="${RED}* "
+    fi
+    if [[ $UNAME = Darwin ]]
+    then COLOR=${YELLOW}
+    elif [[ $UNAME = Linux ]]
+    then COLOR=${GREEN}
+    fi
+
+    if [[ $TERM =~ xterm* || $TERM =~ rxvt* ]]
+    then TITLE="${TITLE_START}\h:\w (\u)${TITLE_END}"
+    fi
+
+    PROMPT_FORMAT="\t \h:\w \u\\\$"
+
+    if [ -n "$DOMTERM" ]
+    then
+	local PROMPT_START="\[${CSI}14u\]"
+	local PROMPT_END="\[${CSI}15u\]"
+	local BUTTON_START="\[${CSI}16u\]"
+	local BUTTON_END="\[${CSI}17u\]"
+	local COMMAND_START="\[${CSI}19u\]"
+
+	local HTML_START="\[${OSC}72;"
+	local HTML_END="\a\]"
+
+	local TRIANGLE='\342\226\274' # U+25BC "BLACK DOWN-POINTING TRIANGLE"
+
+	PS1="${COMMAND_START}${BUTTON_START}${TRIANGLE}${BUTTON_END}${PROMPT_START}${PROMPT_FORMAT} ${PROMPT_END}"
+    else
+	PS1="${TITLE:-}${SSH_MARKER:-}${COLOR}${PROMPT_FORMAT}${RESET} "
+    fi
+}
+set_prompt
+unset set_prompt
+
+# Define completions
+do_bash_completion()
+{
+    local BASH_COMPLETION_FILE
+
+    # MacPorts (OS X) location
+    if [[ $UNAME = Darwin ]] && [[ -r /opt/local/etc/bash_completion ]]
+    then BASH_COMPLETION_FILE=/opt/local/etc/bash_completion
+    elif [[ $UNAME = Darwin ]] \
+	&& [[ -r /opt/local/etc/profile.d/bash_completion.sh ]]
+    then BASH_COMPLETION_FILE=/opt/local/etc/profile.d/bash_completion.sh
+    # Fink (OS X) location
+    elif [[ $UNAME = Darwin ]] && [[ -r /sw/etc/bash_completion ]]
+    then BASH_COMPLETION_FILE=/sw/etc/bash_completion
+    # Debian (Linux) location
+    elif [[ $UNAME = Linux ]] && [[ -r /etc/bash_completion ]]
+    then BASH_COMPLETION_FILE=/etc/bash_completion
+    fi
+
+    [ -z "$BASH_COMPLETION_FILE" ] || . $BASH_COMPLETION_FILE
+}
+do_bash_completion
+unset do_bash_completion
