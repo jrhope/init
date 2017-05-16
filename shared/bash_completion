@@ -11,7 +11,7 @@ HOST=$( hostname -s )
 # Get path to real parent directory of this file
 if [[ -L "${BASH_SOURCE[0]}" ]]
 then
-    here=$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")" >> /dev/null; pwd)
+    here=$(cd "$(dirname "${BASH_SOURCE[0]}")" >> /dev/null; cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")" >> /dev/null; pwd)
 else
     here=$(cd "$(dirname "${BASH_SOURCE[0]}")" >> /dev/null; pwd)
 fi

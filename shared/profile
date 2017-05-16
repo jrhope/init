@@ -24,7 +24,7 @@ fi
 # Get path to directory of original
 if [[ -L "$this" ]]
 then
-    here=$(cd "$(dirname "$(readlink "$this")")" >> /dev/null; pwd)
+    here=$(cd "$(dirname "$this")" >> /dev/null; cd "$(dirname "$(readlink "$this")")" >> /dev/null; pwd)
 else
     here=$(cd "$(dirname "$this")" >> /dev/null; pwd)
 fi
