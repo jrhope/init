@@ -114,6 +114,7 @@ unset set_prompt
 do_bash_completion()
 {
     local BASH_COMPLETION_FILE
+    local UNAME=$(uname -s)
 
     # MacPorts (OS X) location
     if [[ $UNAME = Darwin ]] && [[ -r /opt/local/etc/bash_completion ]]
