@@ -8,6 +8,11 @@
 set this = `/usr/sbin/lsof +p $$ | grep -oE /.\*tcshrc`
 set here = `dirname $this`
 
+# Make sure prepend_path is defined before calling get_environment.
+if ( -r "$here/../scripts/path_functions.csh" ) then
+    source "$here/../scripts/path_functions.csh"
+endif
+
 # Get environment variables
 if ( -x "$here/../scripts/get_environment.bash" ) then
     eval `"$here/../scripts/get_environment.bash" -c`
