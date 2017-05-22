@@ -80,7 +80,7 @@ endif
 
 set prompt_FORMAT = "%P %m:%~ %n%#"
 
-if ( -n "$DOMTERM" ) then
+if ( $?DOMTERM ) then
     set prompt_START = "%{${prompt_CSI}14u%}"
     set prompt_END   = "%{${prompt_CSI}15u%}"
     set prompt_BUTTON_START = "%{${prompt_CSI}16u%}"
