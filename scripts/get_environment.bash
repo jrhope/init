@@ -49,7 +49,6 @@ then
     elif [ "x$1" == "x-c" ]
     then
         # csh-like shells
-        printf "source \"%s\";\n" "$here/path_functions.csh"
         printf -v awkprog "$awkskipcomments { if (\$1 ~ /^$pathreg\$/) { print \"prepend_path \"\$1\" \"\$2\";\" } else { print \"setenv \"\$1\" \"\$2\";\" } }"
     fi
 fi
