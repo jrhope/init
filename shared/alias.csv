@@ -1,2 +1,5 @@
 ll,ls -l
 ipcrmall,ipcs -a | grep "^[qms]" | cut -d " " -f 1,2 | sed "s/^/-/" | tr "\n" " " | xargs ipcrm
+grep,grep --color=auto
+egrep,egrep --color=auto
+fgrep,fgrep --color=auto
