@@ -21,17 +21,18 @@ unset issourced
 # Set up for sh/csh style
 awkprog=""
 awkskipcomments="NF && \$1!~/^#/"
+commas="gsub(/_;_/, \",\", \$2);"
 
 if [ $# -eq 1 ]
 then
     if [ "x$1" == "x-s" ]
     then
         # sh-like shells
-        awkprog="$awkskipcomments { print \"alias \"\$1\"='\"\$2\"';\" }"
+        awkprog="$awkskipcomments { $commas print \"alias \"\$1\"='\"\$2\"';\" }"
     elif [ "x$1" == "x-c" ]
     then
         # csh-like shells
-        awkprog="$awkskipcomments { print \"alias \"\$1\" '\"\$2\"';\" }"
+        awkprog="$awkskipcomments { $commas print \"alias \"\$1\" '\"\$2\"';\" }"
     fi
 fi
 
