@@ -81,6 +81,8 @@ set_prompt()
     then COLOR=${YELLOW}
     elif [[ $UNAME = Linux ]]
     then COLOR=${GREEN}
+    elif [[ $UNAME = FreeBSD ]]
+    then COLOR=${CYAN}
     fi
 
     if [[ $TERM =~ xterm* || $TERM =~ rxvt* ]]
