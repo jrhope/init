@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # @file scripts/install.sh
 # @author Jamison Hope <jrh@theptrgroup.com>
 

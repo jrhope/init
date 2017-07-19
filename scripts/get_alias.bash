@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # @file scripts/get_alias.bash
 # Reads alias definitions from CSV files and prints them in a format
 # suitable for evaluation by a shell:

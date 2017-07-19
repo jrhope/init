@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # @file scripts/get_environment.bash
 # Reads environment variable definitions from CSV files and prints
 # them in a format suitable for evaluation by a shell:
