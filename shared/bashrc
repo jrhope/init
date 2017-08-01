@@ -16,8 +16,10 @@ fi
     && . "$here/../scripts/path_functions.sh"
 
 # Get alias definitions
+set -f
 [ -x "$here/../scripts/get_alias.bash" ] \
     && eval `"$here/../scripts/get_alias.bash" -s`
+set +f
 
 # Extra bash-only aliases
 alias rehash='hash -r'

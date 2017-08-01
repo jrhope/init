@@ -19,9 +19,11 @@ if ( -x "$here/../scripts/get_environment.bash" ) then
 endif
 
 # Get alias definitions
+set noglob
 if ( -x "$here/../scripts/get_alias.bash" ) then
     eval `"$here/../scripts/get_alias.bash" -c`
 endif
+unset noglob
 
 # Set shell variables
 set history = 500
