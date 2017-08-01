@@ -1,5 +1,5 @@
 ll,ls -l
-ipcrmall,ipcs -a | grep "^[qms]" | sed -e "s/  */ /g" | cut -d " " -f 1_;_2 | sed "s/^/-/" | tr "\n" " " | xargs ipcrm
+ipcrmall,ipcs -a | grep "^[qms]" | sed -e "s/\\([ ]\\)\\1*/ /g" | cut -d " " -f 1_;_2 | sed "s/^/-/" | tr "\n" " " | xargs ipcrm
 grep,grep --color=auto
 egrep,egrep --color=auto
 fgrep,fgrep --color=auto
