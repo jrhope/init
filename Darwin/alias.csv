@@ -1,3 +1,4 @@
 ls,ls -FG
 greplibs,find . -name "*.dylib" -exec nm -o "{}" ";" | c++filt | grep -i
 kawa,rlwrap -c -p'\''1;36'\'' -q\" java kawa.repl
+gitxall,for d in `find . -type d -name .git -execdir pwd \;`; do pushd $d >/dev/null; gitx; popd >/dev/null; done
