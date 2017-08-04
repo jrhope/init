@@ -4,4 +4,4 @@ grep,grep --color=auto
 egrep,egrep --color=auto
 fgrep,fgrep --color=auto
 gitf,find . -type d -name .git -execdir pwd \; -execdir git fetch \;
-gits,find . -type d -name .git -execdir pwd \; -execdir git status \;
+gits,find . -type d -name .git -execdir echo "########################################" \; -execdir pwd \; -execdir git status \;
