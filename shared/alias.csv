@@ -3,5 +3,6 @@ ipcrmall,ipcs -a | grep "^[qms]" | sed -e "s/\\([ ]\\)\\1*/ /g" | cut -d " " -f 
 grep,grep --color=auto
 egrep,egrep --color=auto
 fgrep,fgrep --color=auto
+gitd,find . -type d -name .git -execdir pwd \; -execdir git diff \;
 gitf,find . -type d -name .git -execdir pwd \; -execdir git fetch \;
 gits,find . -type d -name .git -execdir echo "########################################" \; -execdir pwd \; -execdir git status \;
